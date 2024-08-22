@@ -34,6 +34,7 @@
           modules = [
             {
               packages = with pkgs; [
+                php83
                 php83Packages.phpstan
                 php83Packages.php-codesniffer
                 php83Packages.composer
