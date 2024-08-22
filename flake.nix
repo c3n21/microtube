@@ -33,7 +33,11 @@
           inherit inputs pkgs;
           modules = [
             {
-              packages = with pkgs; [php83Packages.phpstan php83Packages.php-codesniffer];
+              packages = with pkgs; [
+                php83Packages.phpstan
+                php83Packages.php-codesniffer
+                php83Packages.composer
+              ];
             }
           ];
         };
