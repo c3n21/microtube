@@ -9,6 +9,7 @@
   nixConfig = {
     extra-trusted-public-keys = "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw=";
     extra-substituters = "https://devenv.cachix.org";
+    allowUnfree = true;
   };
 
   outputs = {
@@ -27,7 +28,10 @@
     devShells =
       forEachSystem
       (system: let
-        pkgs = nixpkgs.legacyPackages.${system};
+        pkgs = import nixpkgs {
+          system = "x86_64-linux";
+          config.allowUnfree = true;
+        };
       in {
         default = devenv.lib.mkShell {
           inherit inputs pkgs;
@@ -38,6 +42,7 @@
                 php83Packages.phpstan
                 php83Packages.php-codesniffer
                 php83Packages.composer
+                nodePackages.intelephense
               ];
             }
           ];
