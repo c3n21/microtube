@@ -20,6 +20,9 @@ importers:
       '@vue/server-renderer':
         specifier: ^3.4.0
         version: 3.4.38(vue@3.4.38(typescript@5.5.4))
+      '@vue/typescript-plugin':
+        specifier: ^2.0.29
+        version: 2.0.29(typescript@5.5.4)
       autoprefixer:
         specifier: ^10.4.12
         version: 10.4.20(postcss@8.4.41)
@@ -398,6 +401,9 @@ packages:
 
   '@vue/shared@3.4.38':
     resolution: {integrity: sha512-q0xCiLkuWWQLzVrecPb0RMsNWyxICOjPrcrwxTUEHb1fsnvni4dcuyG7RT/Ie7VPTvnjzIaWzRMUBsrqNj/hhw==}
+
+  '@vue/typescript-plugin@2.0.29':
+    resolution: {integrity: sha512-cO/cP467bGONkm/imEVvcRg77/VmoWpLyO94jSwLAt8QV0X9l414SwsRdsae+wGMPV+6k7rweer0SP16A0HYdw==}
 
   ansi-regex@5.0.1:
     resolution: {integrity: sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ==}
@@ -1320,6 +1326,14 @@ snapshots:
       vue: 3.4.38(typescript@5.5.4)
 
   '@vue/shared@3.4.38': {}
+
+  '@vue/typescript-plugin@2.0.29(typescript@5.5.4)':
+    dependencies:
+      '@volar/typescript': 2.4.0
+      '@vue/language-core': 2.0.29(typescript@5.5.4)
+      '@vue/shared': 3.4.38
+    transitivePeerDependencies:
+      - typescript
 
   ansi-regex@5.0.1: {}
 

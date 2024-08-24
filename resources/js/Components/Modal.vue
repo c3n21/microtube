@@ -1,18 +1,20 @@
-<script setup lang="ts">
+<script setup>
 import { computed, onMounted, onUnmounted, watch } from 'vue';
 
-const props = withDefaults(
-    defineProps<{
-        show?: boolean;
-        maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl';
-        closeable?: boolean;
-    }>(),
-    {
-        show: false,
-        maxWidth: '2xl',
-        closeable: true,
-    }
-);
+const props = defineProps({
+    show: {
+        type: Boolean,
+        default: false,
+    },
+    maxWidth: {
+        type: String,
+        default: '2xl',
+    },
+    closeable: {
+        type: Boolean,
+        default: true,
+    },
+});
 
 const emit = defineEmits(['close']);
 
@@ -22,7 +24,7 @@ watch(
         if (props.show) {
             document.body.style.overflow = 'hidden';
         } else {
-            document.body.style.overflow = 'visible';
+            document.body.style.overflow = null;
         }
     }
 );
@@ -33,7 +35,7 @@ const close = () => {
     }
 };
 
-const closeOnEscape = (e: KeyboardEvent) => {
+const closeOnEscape = (e) => {
     if (e.key === 'Escape' && props.show) {
         close();
     }
@@ -43,7 +45,7 @@ onMounted(() => document.addEventListener('keydown', closeOnEscape));
 
 onUnmounted(() => {
     document.removeEventListener('keydown', closeOnEscape);
-    document.body.style.overflow = 'visible';
+    document.body.style.overflow = null;
 });
 
 const maxWidthClass = computed(() => {
@@ -70,7 +72,7 @@ const maxWidthClass = computed(() => {
                     leave-to-class="opacity-0"
                 >
                     <div v-show="show" class="fixed inset-0 transform transition-all" @click="close">
-                        <div class="absolute inset-0 bg-gray-500 dark:bg-gray-900 opacity-75" />
+                        <div class="absolute inset-0 bg-gray-500 opacity-75" />
                     </div>
                 </Transition>
 
@@ -84,7 +86,7 @@ const maxWidthClass = computed(() => {
                 >
                     <div
                         v-show="show"
-                        class="mb-6 bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto"
+                        class="mb-6 bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto"
                         :class="maxWidthClass"
                     >
                         <slot v-if="show" />
