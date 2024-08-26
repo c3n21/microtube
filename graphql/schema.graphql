@@ -17,6 +17,12 @@ type Query {
       "Filters by name. Accepts SQL LIKE wildcards `%` and `_`."
       name: String @where(operator: "like")
     ): [User!]! @paginate(defaultCount: 10)
+
+    "List multiple videos."
+    videos(
+      "Filters by title. Accepts SQL LIKE wildcards `%` and `_`."
+      title: String @where(operator: "like")
+    ): [Video!]! @paginate(defaultCount: 10)
 }
 
 type Mutation {
