@@ -9,6 +9,9 @@ class Video extends Model
 {
     use HasFactory;
 
+    const CREATED_AT = null;
+    const UPDATED_AT = 'uploaded_at';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -17,4 +20,9 @@ class Video extends Model
     protected $fillable = [
         'title'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
