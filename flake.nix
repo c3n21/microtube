@@ -37,12 +37,20 @@
           inherit inputs pkgs;
           modules = [
             {
+              # dotenv.enable = true;
+              # enterShell = ''
+              #   source .env
+              #   # dunno why this is needed even after source
+              #   export COMPOSE_FILE=$COMPOSE_FILE
+              # '';
+
               packages = with pkgs; [
-                php83
+                nodePackages_latest.graphql-language-service-cli
                 php83Packages.phpstan
                 php83Packages.php-codesniffer
                 php83Packages.composer
                 nodePackages.intelephense
+                act
               ];
             }
           ];
