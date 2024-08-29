@@ -19,3 +19,13 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+/.vite
+# Devenv
+.devenv*
+devenv.local.nix
+
+# direnv
+.direnv
+
+# pre-commit
+.pre-commit-config.yaml

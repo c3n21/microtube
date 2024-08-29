@@ -1,4 +1,5 @@
 {
+    "name": "microtube-fe",
     "private": true,
     "type": "module",
     "scripts": {
