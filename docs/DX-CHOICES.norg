@@ -1,0 +1,21 @@
+* Why not using a monorepo
+  Turborepo doesn't seem to be a good fit for this project.
+  The main reason is that it's a tool that is not widely documented
+  how to integrate it with PHP projects.
+
+  Nx was also considered and it does have some documentation about integration with other
+  languages but it was not mentioned in the tech stack used at DSCOVR so it was not considered.
+
+* Why not using DDEV / Laravel Sail for local container development
+  Although I have prior experience with DDEV as development tool with CMS (Magento) and Laravel Sail has the bonus
+  of being the official development tool for Laravel, I decided to use Podman and write my own Containerfile (which can be used also on Docker).
+  The main reason is that I wanted to have more control over the development environment and also Podman by default
+  is more secure than Docker since it's rootless and daemon-less, not to mention that Docker also has some {https://www.docker.com/pricing/faq/#where-can-i-learn-more-about-how-docker-desktop-is-licensed}[licensing issues]
+  (even though limited to Docker Desktop).
+
+* Why using devenv
+  I use NixOS as my main operating system and I wanted to have a way to develop
+  without polluting my dotfiles with PHP specific toolchain; eventual contributor
+  of the project don't need to use devenv.
+  Unfortunately I won't be using Nix as container's image because it would take me
+  a fair amount of time to setup, instead I will just use php official Docker images.

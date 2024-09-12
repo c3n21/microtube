@@ -1,0 +1,33 @@
+services:
+  backend:
+    
+    build:
+      context: .
+      dockerfile: ./containers/laravel.containerfile
+    volumes:
+      - .:/app
+    ports:
+      - 8000:8000
+    # volumes:
+    #   - db-data:/etc/data
+    # networks:
+    #   - back-tier
+
+# volumes:
+#   db-data:
+#     driver: flocker
+#     driver_opts:
+#       size: "10GiB"
+
+# configs:
+#   httpd-config:
+#     external: true
+
+# secrets:
+#   server-certificate:
+#     external: true
+
+# networks:
+  # The presence of these objects is sufficient to define them
+  # front-tier: {}
+  # back-tier: {}
