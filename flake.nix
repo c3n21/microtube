@@ -37,12 +37,18 @@
           inherit inputs pkgs;
           modules = [
             {
+              dotenv.enable = true;
+              enterShell = ''
+                export PATH="$PATH:vendor/bin"
+              '';
+
               packages = with pkgs; [
-                php83
+                nodePackages_latest.graphql-language-service-cli
                 php83Packages.phpstan
                 php83Packages.php-codesniffer
                 php83Packages.composer
                 nodePackages.intelephense
+                act
               ];
             }
           ];
