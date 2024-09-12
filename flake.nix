@@ -33,12 +33,10 @@
           inherit inputs pkgs;
           modules = [
             {
-              # dotenv.enable = true;
-              # enterShell = ''
-              #   source .env
-              #   # dunno why this is needed even after source
-              #   export COMPOSE_FILE=$COMPOSE_FILE
-              # '';
+              dotenv.enable = true;
+              enterShell = ''
+                export PATH="$PATH:vendor/bin"
+              '';
 
               packages = with pkgs; [
                 nodePackages_latest.graphql-language-service-cli
