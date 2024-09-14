@@ -43,6 +43,7 @@
               '';
 
               packages = with pkgs; [
+                php
                 nodePackages_latest.graphql-language-service-cli
                 php83Packages.phpstan
                 php83Packages.php-codesniffer
