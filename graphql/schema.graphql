@@ -64,7 +64,4 @@ type Video {
     uploaded_at: DateTime!
 
     user: User! @belongsTo
-
-    "Where to retrieve the video"
-    path: String!
 }
