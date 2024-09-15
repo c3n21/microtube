@@ -19,6 +19,7 @@ class VideoFactory extends Factory
         $faker = \Faker\Factory::create();
         return [
             'uploaded_at' => $faker->date(),
+            'path' => 'test.mp4',
         ];
     }
 }
