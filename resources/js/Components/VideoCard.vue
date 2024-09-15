@@ -1,16 +1,20 @@
 <script setup lang="ts">
 import { Video } from "@/types/graphql";
+import { Link } from "@inertiajs/vue3";
 
 interface VideoCardProps {
     video: Video;
 }
+
 defineProps<VideoCardProps>();
 </script>
 
 <template>
     <div class="video-card">
         <div class="video-card-header">
-            <h3>{{ video.title }}</h3>
+            <Link :href="`/play/${video.id}`">
+                <h3>{{ video.title }}</h3>
+            </Link>
         </div>
         <div class="video-card-body">
             <p><strong>Uploaded by:</strong> {{ video.user.name }}</p>
