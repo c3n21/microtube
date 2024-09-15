@@ -1,0 +1,10 @@
+query getVideos($title: String) {
+    videos(title: $title) {
+        title
+        uploaded_at
+        user {
+            name
+            email
+        }
+    }
+}
