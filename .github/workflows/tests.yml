@@ -15,40 +15,30 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup PHP with PECL extension
-        uses: shivammathur/setup-php@v2
-        env:
-          fail-fast: true
-        with:
-          php-version: '8.3.11'
-
       - name: Copy env vars
         run: cp .env.local.example .env
 
-      - name: Cache dependencies
-        uses: actions/cache@v4
-        with:
-          path: /tmp/composer-cache
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
+      - uses: hoverkraft-tech/compose-action@v2.0.0
 
-      - name: Install dependencies
-        uses: php-actions/composer@v6
+      - name: Install deps
+        run: |
+          docker compose exec laravel.test composer install
+          docker compose exec laravel.test npm ci
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20.17.0
-          cache: 'npm'
-      - run: npm ci
-      - run: npm run build
+      # - name: Cache dependencies
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: /tmp/composer-cache
+      #     key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+      #     restore-keys: ${{ runner.os }}-composer-
 
       - name: Initialize project
         run: |
-          sudo chmod -R 775 *
-          php artisan key:generate
-          php artisan migrate
+          # sudo chmod -R 775 *
+          docker compose exec laravel.test php artisan key:generate
+          docker compose exec laravel.test php artisan migrate
 
 
       - name: Run tests
         run: |
-          sudo php artisan test
+          docker compose exec laravel.test php artisan test
