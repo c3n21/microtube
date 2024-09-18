@@ -24,6 +24,8 @@ export type Scalars = {
   EnumValue: { input: any; output: any; }
   /** Any constant literal value: https://graphql.github.io/graphql-spec/draft/#sec-Input-Values */
   EqValue: { input: any; output: any; }
+  /** Can be used as an argument to upload files using https://github.com/jaydenseric/graphql-multipart-request-spec */
+  Upload: { input: any; output: any; }
   /** Any constant literal value: https://graphql.github.io/graphql-spec/draft/#sec-Input-Values */
   WhereKeyValue: { input: any; output: any; }
   /** Any constant literal value: https://graphql.github.io/graphql-spec/draft/#sec-Input-Values */
@@ -130,11 +132,12 @@ export enum MorphToManyType {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  uploadVideo?: Maybe<Video>;
+  createVideo?: Maybe<Video>;
 };
 
 
-export type MutationUploadVideoArgs = {
+export type MutationCreateVideoArgs = {
+  file: Scalars['Upload']['input'];
   title: Scalars['String']['input'];
   user_id: Scalars['ID']['input'];
 };
@@ -336,6 +339,15 @@ export type VideoPaginator = {
   paginatorInfo: PaginatorInfo;
 };
 
+export type UploadVideoMutationVariables = Exact<{
+  file: Scalars['Upload']['input'];
+  title: Scalars['String']['input'];
+  user_id: Scalars['ID']['input'];
+}>;
+
+
+export type UploadVideoMutation = { __typename?: 'Mutation', createVideo?: { __typename?: 'Video', id: string, title: string, uploaded_at: any } | null };
+
 export type GetVideosQueryVariables = Exact<{
   title?: InputMaybe<Scalars['String']['input']>;
 }>;
@@ -344,4 +356,5 @@ export type GetVideosQueryVariables = Exact<{
 export type GetVideosQuery = { __typename?: 'Query', videos: Array<{ __typename?: 'Video', title: string, uploaded_at: any, user: { __typename?: 'User', name: string, email: string } }> };
 
 
+export const UploadVideoDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UploadVideo"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"file"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Upload"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"title"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"user_id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createVideo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"file"},"value":{"kind":"Variable","name":{"kind":"Name","value":"file"}}},{"kind":"Argument","name":{"kind":"Name","value":"title"},"value":{"kind":"Variable","name":{"kind":"Name","value":"title"}}},{"kind":"Argument","name":{"kind":"Name","value":"user_id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"user_id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"uploaded_at"}}]}}]}}]} as unknown as DocumentNode<UploadVideoMutation, UploadVideoMutationVariables>;
 export const GetVideosDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getVideos"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"title"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"videos"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"title"},"value":{"kind":"Variable","name":{"kind":"Name","value":"title"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"uploaded_at"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}}]}}]}}]} as unknown as DocumentNode<GetVideosQuery, GetVideosQueryVariables>;

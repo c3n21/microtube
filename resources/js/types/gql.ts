@@ -13,6 +13,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
+    "mutation UploadVideo($file: Upload!, $title: String!, $user_id: ID!) {\n  createVideo(file: $file, title: $title, user_id: $user_id) {\n    id\n    title\n    uploaded_at\n  }\n}": types.UploadVideoDocument,
     "query getVideos($title: String) {\n  videos(title: $title) {\n    title\n    uploaded_at\n    user {\n      name\n      email\n    }\n  }\n}": types.GetVideosDocument,
 };
 
@@ -30,6 +31,10 @@ const documents = {
  */
 export function graphql(source: string): unknown;
 
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "mutation UploadVideo($file: Upload!, $title: String!, $user_id: ID!) {\n  createVideo(file: $file, title: $title, user_id: $user_id) {\n    id\n    title\n    uploaded_at\n  }\n}"): (typeof documents)["mutation UploadVideo($file: Upload!, $title: String!, $user_id: ID!) {\n  createVideo(file: $file, title: $title, user_id: $user_id) {\n    id\n    title\n    uploaded_at\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
