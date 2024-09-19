@@ -1,5 +1,6 @@
-/* eslint-disable */
-import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
+import gql from 'graphql-tag';
+import * as VueApolloComposable from '@vue/apollo-composable';
+import * as VueCompositionApi from 'vue';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -7,6 +8,7 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: 
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
+export type ReactiveFunction<TParam> = () => TParam;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: { input: string; output: string; }
@@ -356,5 +358,71 @@ export type GetVideosQueryVariables = Exact<{
 export type GetVideosQuery = { __typename?: 'Query', videos: Array<{ __typename?: 'Video', title: string, uploaded_at: any, user: { __typename?: 'User', name: string, email: string } }> };
 
 
-export const UploadVideoDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UploadVideo"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"file"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Upload"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"title"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"user_id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createVideo"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"file"},"value":{"kind":"Variable","name":{"kind":"Name","value":"file"}}},{"kind":"Argument","name":{"kind":"Name","value":"title"},"value":{"kind":"Variable","name":{"kind":"Name","value":"title"}}},{"kind":"Argument","name":{"kind":"Name","value":"user_id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"user_id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"uploaded_at"}}]}}]}}]} as unknown as DocumentNode<UploadVideoMutation, UploadVideoMutationVariables>;
-export const GetVideosDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getVideos"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"title"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"videos"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"title"},"value":{"kind":"Variable","name":{"kind":"Name","value":"title"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"uploaded_at"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}}]}}]}}]} as unknown as DocumentNode<GetVideosQuery, GetVideosQueryVariables>;
+export const UploadVideoDocument = gql`
+    mutation UploadVideo($file: Upload!, $title: String!, $user_id: ID!) {
+  createVideo(file: $file, title: $title, user_id: $user_id) {
+    id
+    title
+    uploaded_at
+  }
+}
+    `;
+
+/**
+ * __useUploadVideoMutation__
+ *
+ * To run a mutation, you first call `useUploadVideoMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useUploadVideoMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useUploadVideoMutation({
+ *   variables: {
+ *     file: // value for 'file'
+ *     title: // value for 'title'
+ *     user_id: // value for 'user_id'
+ *   },
+ * });
+ */
+export function useUploadVideoMutation(options: VueApolloComposable.UseMutationOptions<UploadVideoMutation, UploadVideoMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<UploadVideoMutation, UploadVideoMutationVariables>> = {}) {
+  return VueApolloComposable.useMutation<UploadVideoMutation, UploadVideoMutationVariables>(UploadVideoDocument, options);
+}
+export type UploadVideoMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<UploadVideoMutation, UploadVideoMutationVariables>;
+export const GetVideosDocument = gql`
+    query getVideos($title: String) {
+  videos(title: $title) {
+    title
+    uploaded_at
+    user {
+      name
+      email
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetVideosQuery__
+ *
+ * To run a query within a Vue component, call `useGetVideosQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetVideosQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param variables that will be passed into the query
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useGetVideosQuery({
+ *   title: // value for 'title'
+ * });
+ */
+export function useGetVideosQuery(variables: GetVideosQueryVariables | VueCompositionApi.Ref<GetVideosQueryVariables> | ReactiveFunction<GetVideosQueryVariables> = {}, options: VueApolloComposable.UseQueryOptions<GetVideosQuery, GetVideosQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<GetVideosQuery, GetVideosQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetVideosQuery, GetVideosQueryVariables>> = {}) {
+  return VueApolloComposable.useQuery<GetVideosQuery, GetVideosQueryVariables>(GetVideosDocument, variables, options);
+}
+export function useGetVideosLazyQuery(variables: GetVideosQueryVariables | VueCompositionApi.Ref<GetVideosQueryVariables> | ReactiveFunction<GetVideosQueryVariables> = {}, options: VueApolloComposable.UseQueryOptions<GetVideosQuery, GetVideosQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<GetVideosQuery, GetVideosQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetVideosQuery, GetVideosQueryVariables>> = {}) {
+  return VueApolloComposable.useLazyQuery<GetVideosQuery, GetVideosQueryVariables>(GetVideosDocument, variables, options);
+}
+export type GetVideosQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<GetVideosQuery, GetVideosQueryVariables>;

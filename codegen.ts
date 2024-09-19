@@ -5,9 +5,18 @@ const config: CodegenConfig = {
     schema: ["./graphql/*.graphql"],
     documents: "./graphql/documents/*.graphql",
     generates: {
-        "./resources/js/types/": {
-            preset: "client",
-            plugins: [],
+        "./resources/js/types/graphql.ts": {
+            config: {
+                /**
+                 * @see {@link https://www.npmjs.com/package/@vue/composition-api}
+                 */
+                vueCompositionApiImportFrom: "vue",
+            },
+            plugins: [
+                "typescript",
+                "typescript-operations",
+                "typescript-vue-apollo",
+            ],
         },
         "./graphql.schema.json": {
             plugins: ["introspection"],
