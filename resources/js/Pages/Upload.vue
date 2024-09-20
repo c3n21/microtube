@@ -2,14 +2,14 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { graphql } from "@/types";
 import { useUploadVideoMutation } from "@/types/graphql";
-import { Head } from "@inertiajs/vue3";
+import { Head, usePage } from "@inertiajs/vue3";
 
 import { ref } from "vue";
 
 // GraphQL mutation for file upload
 
 // Reactive properties
-const file = ref(null);
+const file = ref<File | null>(null);
 const fileName = ref("");
 const uploadResult = ref("");
 
@@ -17,23 +17,39 @@ const { mutate } = useUploadVideoMutation();
 
 // Watch for file input changes
 const onFileSelected = (event: Event) => {
-    const files = event.target.files as FileList;
-    if (files && files.length > 0) {
-        file.value = files[0]; // Store the selected file
-        fileName.value = files[0].name; // Display the selected file name
+    if (!(event.target instanceof HTMLInputElement)) {
+        throw new Error("No files selected");
     }
+
+    const files = event.target.files;
+
+    if (!files || 0 >= files.length) {
+        throw new Error("No files selected");
+    }
+
+    file.value = files[0];
+    fileName.value = files[0].name; // Display the selected file name
 };
+
+const {
+    props: {
+        auth: { user },
+    },
+} = usePage();
 
 // Function to trigger file upload
 const uploadFile = () => {
-    if (file.value) {
-        console.log("uploading file", file.value);
-
-        mutate({
-            file: file.value, // Pass the file to the mutation
-            title: "My video", // Pass the title to the mutation
-        });
+    if (!file.value) {
+        throw new Error("No file selected");
     }
+
+    console.log("uploading file", file.value);
+
+    mutate({
+        file: file.value, // Pass the file to the mutation
+        title: "My video", // Pass the title to the mutation
+        user_id: user.id.toString(),
+    });
 };
 </script>
 
