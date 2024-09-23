@@ -58,7 +58,7 @@ const uploadFile = () => {
         </template>
 
         <div class="py-12">
-            <input type="file" @change="onFileSelected" />
+            <input type="file" @change="onFileSelected" accept="video/*" />
             <button @click="uploadFile" :disabled="!file">Upload</button>
             <p v-if="fileName">Selected file: {{ fileName }}</p>
             <p v-if="uploadResult">Upload result: {{ uploadResult }}</p>
