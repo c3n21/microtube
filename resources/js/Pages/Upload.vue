@@ -1,14 +1,10 @@
 <script setup lang="ts">
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { graphql } from "@/types";
 import { useUploadVideoMutation } from "@/types/graphql";
 import { Head, usePage } from "@inertiajs/vue3";
 
 import { ref } from "vue";
 
-// GraphQL mutation for file upload
-
-// Reactive properties
 const file = ref<File | null>(null);
 const fileName = ref("");
 const uploadResult = ref("");
@@ -42,8 +38,6 @@ const uploadFile = () => {
     if (!file.value) {
         throw new Error("No file selected");
     }
-
-    console.log("uploading file", file.value);
 
     mutate({
         file: file.value, // Pass the file to the mutation

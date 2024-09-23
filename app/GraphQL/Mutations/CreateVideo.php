@@ -29,8 +29,6 @@ final readonly class CreateVideo
             throw new \Exception('This query has been run outside of HTTP context');
         }
 
-        $this->validateArgs($args);
-
         /** @var \Illuminate\Http\UploadedFile $file */
         $file = $args['file'];
 
@@ -51,12 +49,5 @@ final readonly class CreateVideo
         }
 
         return $video;
-    }
-
-    private function validateArgs(array $args)
-    {
-        /**
-         * @todo to implement
-         */
     }
 }
