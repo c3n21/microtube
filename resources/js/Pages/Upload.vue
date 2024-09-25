@@ -6,8 +6,8 @@ import { Head, usePage } from "@inertiajs/vue3";
 import { ref } from "vue";
 
 const file = ref<File | null>(null);
-const fileName = ref("");
 const uploadResult = ref("");
+const fileNameInput = ref("");
 
 const { mutate } = useUploadVideoMutation();
 
@@ -24,7 +24,7 @@ const onFileSelected = (event: Event) => {
     }
 
     file.value = files[0];
-    fileName.value = files[0].name; // Display the selected file name
+    fileNameInput.value = files[0].name; // Display the selected file name
 };
 
 const {
@@ -34,17 +34,23 @@ const {
 } = usePage();
 
 // Function to trigger file upload
-const uploadFile = () => {
+function uploadFile() {
     if (!file.value) {
         throw new Error("No file selected");
     }
 
     mutate({
         file: file.value, // Pass the file to the mutation
-        title: "My video", // Pass the title to the mutation
+        title: fileNameInput.value, // Pass the title to the mutation
         user_id: user.id.toString(),
+    }).then((response) => {
+        const createdVideo = response?.data?.createVideo;
+        if (createdVideo) {
+            uploadResult.value = `Uploaded video '${createdVideo.title}' with '${createdVideo.id}' as id`;
+        }
+        throw new Error("Failed to upload the file");
     });
-};
+}
 </script>
 
 <template>
@@ -58,10 +64,11 @@ const uploadFile = () => {
         </template>
 
         <div class="py-12">
+            <input v-if="file" type="text" v-model="fileNameInput" />
             <input type="file" @change="onFileSelected" accept="video/*" />
-            <button @click="uploadFile" :disabled="!file">Upload</button>
-            <p v-if="fileName">Selected file: {{ fileName }}</p>
-            <p v-if="uploadResult">Upload result: {{ uploadResult }}</p>
+            <button type="submit" @click="uploadFile" :disabled="!file">
+                Upload
+            </button>
         </div>
     </AuthenticatedLayout>
 </template>
