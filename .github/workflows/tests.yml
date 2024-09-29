@@ -30,12 +30,13 @@ jobs:
       - name: Copy env vars
         run: cp .env.local.example .env
 
-      - name: Cache dependencies
-        uses: actions/cache@v4
-        with:
-          path: /tmp/composer-cache
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
+      # Remove caching for now because it breaks the CI for some reason
+      # - name: Cache dependencies
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: /tmp/composer-cache
+      #     key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+      #     restore-keys: ${{ runner.os }}-composer-
 
       - name: Install dependencies
         uses: php-actions/composer@v6
