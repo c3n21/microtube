@@ -15,6 +15,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: List filesystem contents
+        run: |
+          ls -alh
+          ls -alh /home/runner/work/microtube/microtube
+
       - name: Setup PHP with PECL extension
         uses: shivammathur/setup-php@v2
         env:
