@@ -1,0 +1,7 @@
+mutation UploadVideo($file: Upload!, $title: String!, $user_id: ID!) {
+    createVideo(file: $file, title: $title, user_id: $user_id) {
+        id
+        title
+        uploaded_at
+    }
+}

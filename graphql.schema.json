@@ -396,9 +396,25 @@
         "isOneOf": null,
         "fields": [
           {
-            "name": "uploadVideo",
+            "name": "createVideo",
             "description": null,
             "args": [
+              {
+                "name": "file",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Upload",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
               {
                 "name": "title",
                 "description": null,
@@ -1070,6 +1086,17 @@
             "deprecationReason": null
           }
         ],
+        "possibleTypes": null
+      },
+      {
+        "kind": "SCALAR",
+        "name": "Upload",
+        "description": "Can be used as an argument to upload files using https://github.com/jaydenseric/graphql-multipart-request-spec",
+        "isOneOf": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": null,
         "possibleTypes": null
       },
       {

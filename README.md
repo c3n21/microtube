@@ -4,7 +4,7 @@ BE for https://github.com/dscovr/php-fs-challenge
 
 # TODO
 - better Readme
-- figure out how to properly type $page.props.auth.user
+- sanitize filename and title
 
 # How to run dev environment
 ## Development environment
