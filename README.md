@@ -28,3 +28,6 @@ podman compose up # docker should be fine too
 ```bash
 chmod -R guo+w storage
 ```
+
+# Credits
+Microtube's logo is from here https://www.svgrepo.com/svg/451121/mu
