@@ -5,6 +5,8 @@ BE for https://github.com/dscovr/php-fs-challenge
 # TODO
 - better Readme
 - sanitize filename and title
+- remove graphql-tag
+- add tags (metadata) and comments to videos
 
 # How to run dev environment
 ## Development environment
