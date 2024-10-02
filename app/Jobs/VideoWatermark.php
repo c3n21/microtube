@@ -2,38 +2,41 @@
 
 namespace App\Jobs;
 
+use App\Console\Commands\AddWatermarkToVideo;
+use App\Models\Video;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Queue\Queueable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\File;
 
 class VideoWatermark implements ShouldQueue, ShouldBeUnique
 {
     use Queueable;
 
     /**
- *
- *
- * @var \App\Models\Video
- */
-    public $video;
-
-    /**
      * Create a new job instance.
      */
-    public function __construct()
-    {
-        //
-    }
+    public function __construct(
+        private Video $video,
+        private UploadedFile $file,
+        private AddWatermarkToVideo $addWatermarkToVideo
+    ) {}
 
     /**
      * Execute the job.
      */
     public function handle(): void
     {
-        //
+        try {
+            $pathname = $this->file->getPathname();
+
+            $this->addWatermarkToVideo::addWatermarkToVideo($pathname, $this->video->getKey());
+
+            File::delete($pathname);
+        } catch (\Exception $e) {
+            throw new \Exception('Error processing video: ' . $e->getMessage());
+        }
     }
 
     /**
