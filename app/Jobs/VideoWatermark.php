@@ -29,8 +29,9 @@ class VideoWatermark implements ShouldQueue, ShouldBeUnique
     {
         try {
             $pathname = $this->filePathname;
+            $target = "{$this->video->getKey()}.mp4";
 
-            $this->addWatermarkToVideo::addWatermarkToVideo($pathname, $this->video->getKey());
+            $this->addWatermarkToVideo::addWatermarkToVideo($pathname, $target);
 
             Storage::disk('videos')->delete($pathname);
         } catch (\Exception $e) {

@@ -16,13 +16,15 @@ class VideoWatermarkTest extends TestCase
     public function test_uploaded_file_gets_deleted_after_processing()
     {
         $filename = 'video.mp4';
+        // file uploaded location
         $filePathname = "/path/to/temp/$filename";
-        $expectedFilename = 'video_key'; // this is also the video key
+        $videoKey = 'video_key';
+        $expectedFilename = "$videoKey.mp4"; // this is also the video key
 
         // Mock the Video model
         $videoMock = Mockery::mock(Video::class);
         $videoMock->shouldReceive('getKey')
-            ->andReturn($expectedFilename); // Mock the video key
+            ->andReturn($videoKey); // Mock the video key
 
         // Mock the UploadedFile
         $uploadedFileMock = $filePathname;
@@ -35,7 +37,7 @@ class VideoWatermarkTest extends TestCase
         // Mock the static AddWatermarkToVideo method
         $addWatermarkMock = Mockery::mock(\App\Console\Commands\AddWatermarkToVideo::class);
         $addWatermarkMock->shouldReceive('addWatermarkToVideo')
-            ->with($filePathname, 'video_key')
+            ->with($filePathname, $expectedFilename)
             ->andReturnUsing(function () use ($expectedFilename) {
                 // Create a dummy MP4 file in the 'videos' disk
                 Storage::disk('videos')->put($expectedFilename, 'dummy content');
