@@ -7,8 +7,7 @@ use App\Models\Video;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class VideoWatermark implements ShouldQueue, ShouldBeUnique
 {
@@ -19,7 +18,7 @@ class VideoWatermark implements ShouldQueue, ShouldBeUnique
      */
     public function __construct(
         private Video $video,
-        private UploadedFile $file,
+        private string $filePathname,
         private AddWatermarkToVideo $addWatermarkToVideo
     ) {}
 
@@ -29,11 +28,11 @@ class VideoWatermark implements ShouldQueue, ShouldBeUnique
     public function handle(): void
     {
         try {
-            $pathname = $this->file->getPathname();
+            $pathname = $this->filePathname;
 
             $this->addWatermarkToVideo::addWatermarkToVideo($pathname, $this->video->getKey());
 
-            File::delete($pathname);
+            Storage::disk('videos')->delete($pathname);
         } catch (\Exception $e) {
             throw new \Exception('Error processing video: ' . $e->getMessage());
         }

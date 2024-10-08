@@ -4,7 +4,6 @@ namespace Tests\Unit\Jobs;
 
 use Tests\TestCase;
 use App\Models\Video;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Mockery;
@@ -26,9 +25,7 @@ class VideoWatermarkTest extends TestCase
             ->andReturn($expectedFilename); // Mock the video key
 
         // Mock the UploadedFile
-        $uploadedFileMock = Mockery::mock(UploadedFile::class);
-        $uploadedFileMock->shouldReceive('getPathname')
-            ->andReturn($filePathname); // Mock the temp file path
+        $uploadedFileMock = $filePathname;
 
         // Mock the Storage disk for 'videos'
         Storage::fake('videos');
@@ -38,17 +35,13 @@ class VideoWatermarkTest extends TestCase
         // Mock the static AddWatermarkToVideo method
         $addWatermarkMock = Mockery::mock(\App\Console\Commands\AddWatermarkToVideo::class);
         $addWatermarkMock->shouldReceive('addWatermarkToVideo')
-            ->with('/path/to/temp/video.mp4', 'video_key')
-            ->andReturnUsing(function ($pathname, $videoKey) {
+            ->with($filePathname, 'video_key')
+            ->andReturnUsing(function () use ($expectedFilename) {
                 // Create a dummy MP4 file in the 'videos' disk
-                Storage::disk('videos')->put($videoKey, 'dummy content');
+                Storage::disk('videos')->put($expectedFilename, 'dummy content');
             })
             ->once();
 
-        // Mock file deletion
-        File::shouldReceive('delete')
-            ->with($filePathname)
-            ->once();
 
         // Create the job instance
 
@@ -59,10 +52,6 @@ class VideoWatermarkTest extends TestCase
 
         // Assert that the dummy MP4 file was saved in the 'videos' disk
         Storage::disk('videos')->assertExists($expectedFilename);
-
-        // Assert that the uploaded file was deleted
-        File::shouldHaveReceived('delete')
-            ->with($filePathname)
-            ->once();
+        Storage::disk('videos')->assertMissing($filePathname);
     }
 }
