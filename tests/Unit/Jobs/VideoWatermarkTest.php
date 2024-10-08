@@ -35,7 +35,7 @@ class VideoWatermarkTest extends TestCase
         Storage::disk('videos')->assertMissing($expectedFilename);
 
         // Mock the static AddWatermarkToVideo method
-        $addWatermarkMock = Mockery::mock(\App\Console\Commands\AddWatermarkToVideo::class);
+        $addWatermarkMock = Mockery::mock(\App\Mixins\AddWatermarkToVideo::class);
         $addWatermarkMock->shouldReceive('addWatermarkToVideo')
             ->with($filePathname, $expectedFilename)
             ->andReturnUsing(function () use ($expectedFilename) {

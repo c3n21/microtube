@@ -3,8 +3,6 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use ProtoneMedia\LaravelFFMpeg\Filters\WatermarkFactory;
-use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 
 /**
  * Add a watermark to the given video file.
@@ -35,7 +33,7 @@ class AddWatermarkToVideo extends Command
      *
      * @return int
      */
-    public function handle()
+    public function handle(\App\Mixins\AddWatermarkToVideo $addWatermark)
     {
         $filepath = $this->argument('filepath');
         $target = $this->argument('target');
@@ -57,7 +55,7 @@ class AddWatermarkToVideo extends Command
         }
 
         try {
-            self::addWatermarkToVideo($filepath, $target);
+            $addWatermark->addWatermarkToVideo($filepath, $target);
 
             $this->info("Watermark added successfully to {$filepath}.");
             return 0;
@@ -65,21 +63,5 @@ class AddWatermarkToVideo extends Command
             $this->error("An error occurred: " . $e->getMessage());
             return 1;
         }
-    }
-
-    public static function addWatermarkToVideo(string $filepath, string $target): void
-    {
-        FFMpeg::fromDisk('videos')->open($filepath)
-            ->addWatermark(function (WatermarkFactory $watermarkFactory) {
-                return $watermarkFactory->fromDisk('public')
-                    ->open('microtube.png')
-                    ->resize(50, 50)
-                    ->right(25)
-                    ->bottom(25);
-            })
-            ->export()
-            ->toDisk('videos')
-            ->inFormat(new \FFMpeg\Format\Video\X264())
-            ->save($target);
     }
 }
