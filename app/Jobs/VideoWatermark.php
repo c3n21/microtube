@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Console\Commands\AddWatermarkToVideo;
+use App\Mixins\AddWatermarkToVideo;
 use App\Models\Video;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;

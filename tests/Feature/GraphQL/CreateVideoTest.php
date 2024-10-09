@@ -2,11 +2,15 @@
 
 namespace Tests\Feature\GraphQL;
 
+use App\Jobs\VideoWatermark;
+use App\Mixins\AddWatermarkToVideo;
 use Database\Seeders\UserSeeder;
 use GraphQL\Error\Error;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
+use Mockery;
 
 class CreateVideoTest extends GraphQLTestCase
 {
@@ -15,6 +19,15 @@ class CreateVideoTest extends GraphQLTestCase
     private $testFileName = 'test.mp4';
     private $testMimeType = 'video/mp4';
     private $mutation = 'mutation ($file: Upload!, $title: String!, $user_id: ID!) { createVideo (file: $file, title: $title, user_id: $user_id) { title } } ';
+    private $mockedAddToWatermark;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->mockedAddToWatermark = Mockery::mock(AddWatermarkToVideo::class);
+        $this->app->instance(AddWatermarkToVideo::class, $this->mockedAddToWatermark);
+        Queue::fake();
+    }
 
     private function generateFile()
     {
@@ -57,6 +70,7 @@ class CreateVideoTest extends GraphQLTestCase
     public function test_upload_video(): void
     {
         Storage::fake('videos');
+        $filePathname = '1.tmp';
         $title = 'SUCCESSFULL TEST';
         $testFile = $this->generateFile();
         $this->seed(UserSeeder::class);
@@ -85,9 +99,12 @@ class CreateVideoTest extends GraphQLTestCase
                 ],
             ],
         ]);
+
+        Queue::assertPushed(VideoWatermark::class);
+
         /**
          * for some reason this throws an error
          */
-        Storage::disk('videos')->assertExists('1');
+        Storage::disk('videos')->assertExists($filePathname);
     }
 }
