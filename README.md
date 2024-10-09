@@ -13,13 +13,19 @@ BE for https://github.com/dscovr/php-fs-challenge
 ```bash
 cp .env.local.example .env
 composer install
-podman compose up # docker should be fine too
+./vendor/bin/sail up
+```
+
+in another shell run
+```bash
+./vendor/bin/sail npm run dev
 ```
 
 ## Production environment
 ```bash
 cp .env.production.example .env
-podman compose up # docker should be fine too
+composer install
+./vendor/bin/sail up
 ```
 
 # Troubleshooting
