@@ -14,6 +14,8 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "nuwave/lighthouse": "^6.43",
+        "pbmedia/laravel-ffmpeg": "^8.5",
+        "spatie/image": "^3.7",
         "tightenco/ziggy": "^2.0"
     },
     "require-dev": {
@@ -23,6 +25,7 @@
         "laravel/breeze": "^2.1",
         "laravel/pint": "^1.13",
         "laravel/sail": "^1.31",
+        "laravel/telescope": "^5.2",
         "mll-lab/laravel-graphiql": "^3.2",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.0",
@@ -60,7 +63,9 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": []
+            "dont-discover": [
+                "laravel/telescope"
+            ]
         }
     },
     "config": {

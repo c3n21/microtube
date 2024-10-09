@@ -4,20 +4,26 @@ declare(strict_types=1);
 
 namespace App\GraphQL\Mutations;
 
+use App\Mixins\AddWatermarkToVideo;
+use App\Jobs\VideoWatermark;
 use App\Models\User;
 use App\Models\Video;
 use GraphQL\Error\Error;
-use Illuminate\Support\Facades\Storage;
 use Nuwave\Lighthouse\Execution\ResolveInfo;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 final readonly class CreateVideo
 {
+    public function __construct(private AddWatermarkToVideo $addWatermarkToVideo) {}
+
     /**
      * Return a value for the field.
      *
      * @param  null  $root Always null, since this field has no parent.
-     * @param  array{}  $args The field arguments passed by the client.
+     * @param  array{
+     *  file: \Illuminate\Http\UploadedFile,
+     *  user_id: string,
+     * }  $args The field arguments passed by the client.
      * @param  \Nuwave\Lighthouse\Support\Contracts\GraphQLContext  $context Shared between all fields.
      * @param  \GraphQL\Type\Definition\ResolveInfo  $resolveInfo Metadata for advanced query resolution.
      * @return mixed The result of resolving the field, matching what was promised in the schema
@@ -29,7 +35,6 @@ final readonly class CreateVideo
             throw new \Exception('This query has been run outside of HTTP context');
         }
 
-        /** @var \Illuminate\Http\UploadedFile $file */
         $file = $args['file'];
 
         $user = User::find($args['user_id']);
@@ -44,9 +49,12 @@ final readonly class CreateVideo
 
         $video->user()->associate($user)->save();
 
-        if (! Storage::disk('videos')->putFile($video->getKey(), $file)) {
-            throw new \Exception("The file '{$file->getClientOriginalName()}' could not be written.");
-        }
+
+        $pathname = "{$video->getKey()}.tmp";
+
+        $file->storeAs('', $pathname, 'videos');
+
+        VideoWatermark::dispatch($video, $pathname, $this->addWatermarkToVideo);
 
         return $video;
     }
