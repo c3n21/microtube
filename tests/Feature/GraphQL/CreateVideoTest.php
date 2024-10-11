@@ -69,7 +69,7 @@ class CreateVideoTest extends GraphQLTestCase
      */
     public function test_upload_video(): void
     {
-        Storage::fake('videos');
+        Storage::fake('tmp');
         $filePathname = '1.tmp';
         $title = 'SUCCESSFULL TEST';
         $testFile = $this->generateFile();
@@ -105,6 +105,6 @@ class CreateVideoTest extends GraphQLTestCase
         /**
          * for some reason this throws an error
          */
-        Storage::disk('videos')->assertExists($filePathname);
+        Storage::disk('tmp')->assertExists($filePathname);
     }
 }

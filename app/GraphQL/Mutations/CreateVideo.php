@@ -52,7 +52,7 @@ final readonly class CreateVideo
 
         $pathname = "{$video->getKey()}.tmp";
 
-        $file->storeAs('', $pathname, 'videos');
+        $file->storeAs('', $pathname, 'tmp');
 
         VideoWatermark::dispatch($video, $pathname, $this->addWatermarkToVideo);
 

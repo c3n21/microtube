@@ -33,7 +33,7 @@ class VideoWatermark implements ShouldQueue, ShouldBeUnique
 
             $this->addWatermarkToVideo::addWatermarkToVideo($pathname, $target);
 
-            Storage::disk('videos')->delete($pathname);
+            Storage::disk('tmp')->delete($pathname);
         } catch (\Exception $e) {
             throw new \Exception('Error processing video: ' . $e->getMessage());
         }

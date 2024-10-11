@@ -7,9 +7,16 @@ use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 
 class AddWatermarkToVideo
 {
-    public static function addWatermarkToVideo(string $filepath, string $target): void
+    /**
+     * Add a watermark to a video.
+     *
+     * The input file will be read from `tmp(disk)/$filename` and will be exported in the `videos` disk.
+     *
+     * @param string $filename name of the under `tmp` disk
+     */
+    public static function addWatermarkToVideo(string $filename, string $target): void
     {
-        FFMpeg::fromDisk('videos')->open($filepath)
+        FFMpeg::fromDisk('tmp')->open($filename)
             ->addWatermark(function (WatermarkFactory $watermarkFactory) {
                 return $watermarkFactory->fromDisk('public')
                     ->open('microtube.png')

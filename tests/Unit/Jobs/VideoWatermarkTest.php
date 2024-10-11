@@ -31,6 +31,7 @@ class VideoWatermarkTest extends TestCase
 
         // Mock the Storage disk for 'videos'
         Storage::fake('videos');
+        Storage::fake('tmp');
 
         Storage::disk('videos')->assertMissing($expectedFilename);
 
@@ -54,6 +55,6 @@ class VideoWatermarkTest extends TestCase
 
         // Assert that the dummy MP4 file was saved in the 'videos' disk
         Storage::disk('videos')->assertExists($expectedFilename);
-        Storage::disk('videos')->assertMissing($filePathname);
+        Storage::disk('tmp')->assertMissing($filePathname);
     }
 }

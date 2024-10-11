@@ -36,11 +36,19 @@ return [
             'throw' => false,
         ],
 
+        'tmp' => [
+            'driver' => 'local',
+            'root' => storage_path('app/tmp'),
+            'url' => env('APP_URL') . '/storage/tmp',
+            'visibility' => 'private',
+            'throw' => false,
+        ],
+
         'videos' => [
             'driver' => 'local',
             'root' => storage_path('app/videos'),
             'url' => env('APP_URL') . '/storage/videos',
-            'visibility' => 'private',
+            'visibility' => 'public',
             'throw' => false,
         ],
 
