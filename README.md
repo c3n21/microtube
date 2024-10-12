@@ -7,6 +7,7 @@ BE for https://github.com/dscovr/php-fs-challenge
 - sanitize filename and title
 - remove graphql-tag
 - add tags (metadata) and comments to videos
+- ziggy is not really in page props (https://laracasts.com/discuss/channels/inertia/inertia-ssr-ziggy-location-error-on-server)
 
 # How to run dev environment
 ## Development environment

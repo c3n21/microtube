@@ -11,6 +11,12 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get('/video/{video_id}', function (string $id) {
+    return Inertia::render('VideoPlayer', [
+        'src' => "/videos/$id.mp4",
+    ]);
+});
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
