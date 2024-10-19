@@ -1,7 +1,7 @@
 <template>
     <div>
         <video ref="videoRef" class="video-js">
-            <source :src="$props.src" type="video/mp4" />
+            <source :src="$props.src" type="application/x-mpegURL" />
         </video>
     </div>
 </template>

@@ -13,7 +13,7 @@ Route::get('/', function () {
 
 Route::get('/video/{video_id}', function (string $id) {
     return Inertia::render('VideoPlayer', [
-        'src' => "/videos/$id.mp4",
+        'src' => "/videos/$id.m3u8",
     ]);
 });
 

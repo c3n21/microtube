@@ -29,7 +29,7 @@ class VideoWatermark implements ShouldQueue, ShouldBeUnique
     {
         try {
             $pathname = $this->filePathname;
-            $target = "{$this->video->getKey()}.mp4";
+            $target = "{$this->video->getKey()}.m3u8";
 
             $this->addWatermarkToVideo::addWatermarkToVideo($pathname, $target);
 
