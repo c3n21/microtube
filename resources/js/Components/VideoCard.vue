@@ -10,7 +10,11 @@ defineProps<VideoCardProps>();
 <template>
     <div class="video-card">
         <div class="video-card-header">
-            <h3>{{ video.title }}</h3>
+            <h3>
+                <a :href="`/video/${video.id}`">
+                    {{ video.title }}
+                </a>
+            </h3>
         </div>
         <div class="video-card-body">
             <p><strong>Uploaded by:</strong> {{ video.user.name }}</p>
